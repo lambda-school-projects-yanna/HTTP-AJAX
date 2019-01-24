@@ -1,6 +1,6 @@
 import React from 'react';
 
-function FriendForm(props) {
+function AddFriendForm(props) {
     return (
         <form onSubmit={props.addFriend}>
             <input 
@@ -30,4 +30,4 @@ function FriendForm(props) {
 
 // addfriend function should handle the axios post request 
 
-export default FriendForm;
+export default AddFriendForm;

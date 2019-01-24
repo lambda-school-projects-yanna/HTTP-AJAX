@@ -16,6 +16,12 @@ const FriendsList = props => {
                     }}>
                 Delete This Friend
             </button>
+            <button 
+                onClick={() => {
+                    props.updateFriend(friend);
+                    }}>
+                Update Friend Details
+            </button>
         </div>
         )
     }))

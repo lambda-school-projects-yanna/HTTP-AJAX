@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
 import FriendsList from './FriendsList/FriendsList';
-import FriendForm from './FriendsList/FriendForm';
+import AddFriendForm from './FriendsList/AddFriendForm';
 
 class App extends Component {
   constructor(props) {
@@ -30,19 +30,30 @@ class App extends Component {
   };
 
   addFriend = e => {
-    axios.post('http://localhost:5000/friends', this.state.newFriend)
-    .then( res => {
-      this.setState({
-        friends: [...this.state.friends, res]
-      })}
-    );
+    axios
+      .post('http://localhost:5000/friends', this.state.newFriend)
+      .then( res => {
+        this.setState({
+          friends: [...this.state.friends, res]
+        })});
   };
 
   trashFriend = (id) => {
-    axios.delete(`http://localhost:5000/friends/${id}`)
-    .then(res => this.setState({
-      friends: res.data}))
+    axios
+      .delete(`http://localhost:5000/friends/${id}`)
+      .then(res => this.setState({
+        friends: res.data}));
   };
+
+  updateFriend = (friend) => {
+    axios
+      .put(`http://localhost:5000/friends/${friend.id}`,{
+        name: prompt('type new name'),
+        age: Number(prompt('type new age')),
+        email: prompt('type new email')
+      })
+      .then(res => this.setState({friends: res.data}))
+  }
   
   componentDidMount = () => {
     axios
@@ -52,20 +63,19 @@ class App extends Component {
   };
 
  
-
-
   render() {
     return (
       <div className="App">
         <h1>Friends</h1>
-        <FriendForm 
+        <AddFriendForm 
           newFriend={this.state.newFriend}
           changeHandler={this.changeHandler}
           addFriend={this.addFriend} 
           friends={this.state.friends} />
         <FriendsList 
           friends={this.state.friends}
-          trashFriend={this.trashFriend} />
+          trashFriend={this.trashFriend} 
+          updateFriend={this.updateFriend} />
       </div>
     );
   };
