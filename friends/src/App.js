@@ -12,7 +12,7 @@ class App extends Component {
       newFriend: {
         name: '',
         age: '',
-        email: ''
+        email: '',
       }
     };
   };
@@ -30,20 +30,25 @@ class App extends Component {
   };
 
   addFriend = e => {
-    e.preventDefault();
     axios.post('http://localhost:5000/friends', this.state.newFriend)
-    .then(
+    .then( res => {
       this.setState({
-        friends: [...this.state.friends, this.state.newFriend]
-      }) 
-    ); 
+        friends: [...this.state.friends, res]
+      })}
+    );
+  };
+
+  trashFriend = (id) => {
+    axios.delete(`http://localhost:5000/friends/${id}`)
+    .then(res => this.setState({
+      friends: res.data}))
   };
   
   componentDidMount = () => {
     axios
-    .get('http://localhost:5000/friends')
-    .then(res => this.setState({friends: res.data}))
-    .catch(err => console.log(err))
+      .get('http://localhost:5000/friends')
+      .then(res => this.setState({friends: res.data}))
+      .catch(err => console.log(err));
   };
 
  
@@ -56,9 +61,11 @@ class App extends Component {
         <FriendForm 
           newFriend={this.state.newFriend}
           changeHandler={this.changeHandler}
-          addFriend={this.addFriend} />
-        <FriendsList 
+          addFriend={this.addFriend} 
           friends={this.state.friends} />
+        <FriendsList 
+          friends={this.state.friends}
+          trashFriend={this.trashFriend} />
       </div>
     );
   };
