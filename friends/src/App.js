@@ -3,6 +3,16 @@ import './App.css';
 import axios from 'axios';
 import FriendsList from './FriendsList/FriendsList';
 import AddFriendForm from './FriendsList/AddFriendForm';
+import styled from 'styled-components';
+
+const WrapperDiv = styled.div`{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 80%;
+  margin-left: 7%;
+}`
 
 class App extends Component {
   constructor(props) {
@@ -48,12 +58,12 @@ class App extends Component {
   updateFriend = (friend) => {
     axios
       .put(`http://localhost:5000/friends/${friend.id}`,{
-        name: prompt('type new name'),
-        age: Number(prompt('type new age')),
-        email: prompt('type new email')
+        name: prompt('type new NAME'),
+        age: Number(prompt('type new AGE')),
+        email: prompt('type new EMAIL')
       })
       .then(res => this.setState({friends: res.data}))
-  }
+  };
   
   componentDidMount = () => {
     axios
@@ -65,20 +75,23 @@ class App extends Component {
  
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <h1>Friends</h1>
         <AddFriendForm 
           newFriend={this.state.newFriend}
           changeHandler={this.changeHandler}
           addFriend={this.addFriend} 
           friends={this.state.friends} />
-        <FriendsList 
-          friends={this.state.friends}
-          trashFriend={this.trashFriend} 
-          updateFriend={this.updateFriend} />
-      </div>
+        <WrapperDiv>
+          <FriendsList 
+            friends={this.state.friends}
+            trashFriend={this.trashFriend} 
+            updateFriend={this.updateFriend} />
+      </WrapperDiv>
+    </div>
+
     );
   };
-}
+};
 
 export default App;
